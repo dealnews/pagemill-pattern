@@ -1,0 +1,26 @@
+{
+    "name": "pagemill/pattern",
+    "description": "Common pattern matching used in PageMill",
+    "type": "library",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Brian Moon",
+            "email": "brianm@dealnews.com"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^7.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "PageMill\\Pattern\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PageMill\\Pattern\\Tests\\": "tests/"
+        }
+    }
+}
