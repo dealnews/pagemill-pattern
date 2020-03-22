@@ -22,27 +22,25 @@ class Pattern {
      * @param  string $type      The matching plan to use for matching the
      *                           target. Each plan must have a type and a
      *                           pattern. Valid types are `exact`, `regex`,
-     *                           and `starts_with`. For tyeps exact and
+     *                           and `starts_with`. For types exact and
      *                           starts_with, the pattern must be a string.
      *                           For type regex, the pattern should be a
      *                           valid regular expresssion.
      * @param  array  $patterns  The target we are checking for a match.
      * @param  string $target    The target we are checking for a match.
+     * @param  array  $tokens    An array that will be filled with pattern
+     *                           matching tokens when $type is regex
      *
-     * @return mixed  False when there is no match. If type is `exact`, and
-     *                there is a match, true will be returned. For type
-     *                `regex`, the return value will be an array containing
-     *                any captured tokens from the regular expression or true
-     *                if the regular expression did not contain any groupings.
-     *                When type is `starts_with, the return value will either
-     *                be true or a string containing any additional value
-     *                after the $pattern string.
+     * @return boolean
+     *
      * @throws \PageMill\Pattern\Exception\InvalidType
      * @throws \PageMill\Pattern\Exception\InvalidPattern
      */
-    public function match($type, $patterns, $target) {
+    public function match(string $type, array $patterns, string $target, ?array &$tokens = []): bool {
 
-        $tokens = false;
+        $match = false;
+
+        $tokens = [];
 
         if (empty($type)) {
             throw new InvalidType("Type can not be empty");
@@ -60,40 +58,35 @@ class Pattern {
                 switch ($type) {
                     case "exact":
                         if ($pattern == $target) {
-                            $tokens = true;
+                            $match = true;
                         }
                         break;
                     case "regex":
                         $result = preg_match($pattern, $target, $matches);
                         if ($result === false) {
                             throw new InvalidPattern("Invalid regex pattern {$pattern}");
-                        } elseif ($result) {
+                        } elseif ($result === 1) {
+                            $match = true;
                             if (!empty($matches[1])) {
                                 unset($matches[0]);
                                 $tokens = array_values($matches);
-                            } else{
-                                $tokens = true;
                             }
                         }
                         break;
                     case "starts_with":
                         if (strpos($target, $pattern) === 0) {
-                            if ($pattern !== $target) {
-                                $tokens = substr($target, strlen($pattern));
-                            } else {
-                                $tokens = true;
-                            }
+                            $match = true;
                         }
                         break;
                     default:
                         throw new InvalidType("Invalid type {$type}");
                 }
-                if ($tokens !== false) {
+                if ($match === true) {
                     break;
                 }
             }
         }
 
-        return $tokens;
+        return $match;
     }
 }

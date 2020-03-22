@@ -9,9 +9,11 @@
             "email": "brianm@dealnews.com"
         }
     ],
-    "require": {},
+    "require": {
+        "php": "~7.3"
+    },
     "require-dev": {
-        "phpunit/phpunit": "^7.5"
+        "phpunit/phpunit": "^9.0"
     },
     "autoload": {
         "psr-4": {

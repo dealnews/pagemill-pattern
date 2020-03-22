@@ -55,7 +55,7 @@ class PatternTest extends \PHPUnit\Framework\TestCase {
             "/foo/bar"
         );
         $this->assertEquals(
-            "/bar",
+            true,
             $result
         );
 
@@ -75,23 +75,31 @@ class PatternTest extends \PHPUnit\Framework\TestCase {
         $result = $r->match(
             "regex",
             ["!^/foo!"],
-            "/foo"
+            "/foo",
+            $tokens
         );
         $this->assertEquals(
             true,
             $result
         );
+        $this->assertEquals(
+            [],
+            $tokens
+        );
 
         $result = $r->match(
             "regex",
             ["!^/foo/(\d+)/!"],
-            "/foo/1/"
+            "/foo/1/",
+            $tokens
         );
         $this->assertEquals(
-            array(
-                1
-            ),
+            true,
             $result
+        );
+        $this->assertEquals(
+            [1],
+            $tokens
         );
     }
 }
