@@ -67,7 +67,7 @@ class Pattern {
                             throw new InvalidPattern("Invalid regex pattern {$pattern}");
                         } elseif ($result === 1) {
                             $match = true;
-                            if (!empty($matches[1])) {
+                            if (array_key_exists(1, $matches)) {
                                 unset($matches[0]);
                                 $tokens = array_values($matches);
                             }

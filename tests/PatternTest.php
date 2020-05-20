@@ -101,5 +101,20 @@ class PatternTest extends \PHPUnit\Framework\TestCase {
             [1],
             $tokens
         );
+
+        $result = $r->match(
+            "regex",
+            ["!^/foo/(\d+)/!"],
+            "/foo/0/",
+            $tokens
+        );
+        $this->assertEquals(
+            true,
+            $result
+        );
+        $this->assertEquals(
+            [0],
+            $tokens
+        );
     }
 }
